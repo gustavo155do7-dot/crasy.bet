@@ -72,6 +72,7 @@
             font-weight: 600;
             cursor: pointer;
             font-size: 14px;
+            transition: all 0.3s;
         }
 
         .btn-pink {
@@ -81,6 +82,7 @@
 
         .btn-pink:hover {
             background: #FF1493;
+            transform: translateY(-2px);
         }
 
         .btn-outline {
@@ -130,7 +132,7 @@
         /* MATCHES GRID */
         .matches-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
@@ -141,10 +143,12 @@
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: transform 0.3s;
+            position: relative;
         }
 
         .match-card:hover {
             transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
         .match-header {
@@ -237,7 +241,7 @@
         }
 
         .btn-bet {
-            background: #FF69B4;
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
             color: white;
             border: none;
             padding: 12px;
@@ -245,12 +249,143 @@
             font-weight: 600;
             cursor: pointer;
             width: 100%;
-            margin-top: 10px;
-            font-size: 14px;
+            margin-top: 12px;
+            font-size: 15px;
+            transition: all 0.3s;
         }
 
         .btn-bet:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255,105,180,0.4);
+        }
+
+        .btn-bet:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .already-bet {
+            background: #FFF0F5;
+            color: #FF69B4;
+            padding: 12px;
+            border-radius: 25px;
+            text-align: center;
+            font-weight: 600;
+            margin-top: 12px;
+            font-size: 14px;
+        }
+
+        /* BET MODAL */
+        .bet-form {
+            background: #FFF0F5;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+
+        .score-inputs {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .score-input-group {
+            text-align: center;
+        }
+
+        .score-input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        .score-input-group input {
+            width: 70px;
+            padding: 10px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border: 2px solid #FFB6D5;
+            border-radius: 10px;
+            color: #FF69B4;
+        }
+
+        .score-input-group input:focus {
+            outline: none;
+            border-color: #FF69B4;
+            box-shadow: 0 0 0 3px rgba(255,105,180,0.2);
+        }
+
+        .bet-amount-group {
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .bet-amount-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .bet-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .bet-btn-ctrl {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #FF69B4;
+            background: white;
+            color: #FF69B4;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bet-btn-ctrl:hover {
+            background: #FF69B4;
+            color: white;
+        }
+
+        .bet-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #FF69B4;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        .btn-confirm-bet {
+            background: #FF69B4;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .btn-confirm-bet:hover {
             background: #FF1493;
+            transform: translateY(-2px);
         }
 
         /* RANKING */
@@ -328,9 +463,11 @@
             background: white;
             border-radius: 12px;
             padding: 30px;
-            max-width: 400px;
+            max-width: 450px;
             width: 90%;
             animation: slideUp 0.3s;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         @keyframes slideUp {
@@ -406,6 +543,7 @@
             animation: slideIn 0.3s;
             border-left: 4px solid #FF69B4;
             font-weight: 500;
+            min-width: 250px;
         }
 
         @keyframes slideIn {
@@ -478,6 +616,7 @@
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .admin-tab {
@@ -521,19 +660,66 @@
         }
 
         .btn-sm {
-            padding: 5px 12px;
+            padding: 6px 14px;
             border: none;
             border-radius: 15px;
             cursor: pointer;
             font-size: 11px;
             font-weight: 600;
             margin: 2px;
+            transition: all 0.3s;
+        }
+
+        .btn-sm:hover {
+            transform: translateY(-1px);
         }
 
         .btn-blue { background: #2196F3; color: white; }
         .btn-red { background: #f44336; color: white; }
         .btn-green { background: #4CAF50; color: white; }
         .btn-orange { background: #ff9800; color: white; }
+
+        /* RESULT MODAL */
+        .result-form {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .result-input {
+            text-align: center;
+        }
+
+        .result-input label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .result-input input {
+            width: 80px;
+            padding: 12px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            border: 2px solid #FFB6D5;
+            border-radius: 10px;
+            color: #FF69B4;
+        }
+
+        .result-input input:focus {
+            outline: none;
+            border-color: #FF69B4;
+        }
+
+        .result-vs {
+            font-size: 24px;
+            font-weight: bold;
+            color: #999;
+        }
 
         /* FILTERS */
         .filters {
@@ -564,6 +750,17 @@
             cursor: pointer;
         }
 
+        .prediction-badge {
+            background: #FFF0F5;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #FF69B4;
+            font-weight: 600;
+            margin-top: 8px;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .matches-grid {
                 grid-template-columns: 1fr;
@@ -576,6 +773,9 @@
             }
             .stats-row {
                 grid-template-columns: 1fr;
+            }
+            .score-inputs {
+                gap: 10px;
             }
         }
     </style>
@@ -598,8 +798,8 @@
     <!-- BANNER -->
     <div class="banner">
         <h1>⚽ Bem-vindo ao Crasy Win!</h1>
-        <p>Participe dos bolões e ganhe Web Coins! 🏆</p>
-        <p style="margin-top: 10px; font-size: 14px;">Ganhe 1000 WC ao se cadastrar + 100 WC de bônus diário</p>
+        <p>Faça seus palpites e ganhe Web Coins! 🏆</p>
+        <p style="margin-top: 10px; font-size: 14px;">Aposta mínima: 20 WC | Ganhe 1000 WC ao se cadastrar</p>
     </div>
 
     <!-- CONTAINER -->
@@ -608,7 +808,6 @@
         <div id="homePage">
             <div class="section-title">🔥 Partidas em Destaque</div>
             <div class="matches-grid" id="featuredMatches"></div>
-
             <div class="section-title">🏆 Últimos Vencedores</div>
             <div class="ranking-list" id="recentWinners"></div>
         </div>
@@ -657,7 +856,7 @@
                     </div>
                 </div>
             </div>
-            <div class="section-title">📜 Histórico</div>
+            <div class="section-title">📜 Histórico de Palpites</div>
             <div class="matches-grid" id="predHistory"></div>
         </div>
 
@@ -701,6 +900,7 @@
                                 <th>Campeonato</th>
                                 <th>Data</th>
                                 <th>Status</th>
+                                <th>Placar</th>
                                 <th>Ações</th>
                             </tr>
                         </thead>
@@ -764,6 +964,30 @@
                 <button type="submit" class="btn btn-pink btn-full">Criar Conta</button>
             </form>
             <button class="btn btn-outline btn-full mt-15" onclick="closeModal('registerModal')">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- RESULT MODAL -->
+    <div class="modal" id="resultModal">
+        <div class="modal-content">
+            <div class="modal-title">📝 Definir Placar Final</div>
+            <p style="text-align: center; margin-bottom: 15px; color: #666;" id="resultMatchInfo"></p>
+            <form onsubmit="saveResult(event)">
+                <div class="result-form">
+                    <div class="result-input">
+                        <label id="resultHomeLabel"></label>
+                        <input type="number" id="resultHomeScore" min="0" max="99" required>
+                    </div>
+                    <div class="result-vs">X</div>
+                    <div class="result-input">
+                        <label id="resultAwayLabel"></label>
+                        <input type="number" id="resultAwayScore" min="0" max="99" required>
+                    </div>
+                </div>
+                <input type="hidden" id="resultMatchId">
+                <button type="submit" class="btn btn-pink btn-full">✅ Confirmar Resultado</button>
+            </form>
+            <button class="btn btn-outline btn-full mt-15" onclick="closeModal('resultModal')">Cancelar</button>
         </div>
     </div>
 
@@ -901,9 +1125,15 @@
                 ? `<div class="match-score">${m.homeScore} - ${m.awayScore}</div>`
                 : '<div class="match-vs">VS</div>';
 
-            const btn = (m.status === 'scheduled' && currentUser && !currentUser.isAdmin)
-                ? `<button class="btn-bet" onclick="placeBet(${m.id})">🎯 Participar do Bolão</button>`
-                : '';
+            let betSection = '';
+            if (m.status === 'scheduled' && currentUser && !currentUser.isAdmin) {
+                const existingBet = predictions.find(p => p.userId === currentUser.id && p.matchId === m.id);
+                if (existingBet) {
+                    betSection = `<div class="already-bet">✅ Você apostou ${existingBet.bet} WC<br>Placar: ${existingBet.homeScore} x ${existingBet.awayScore}</div>`;
+                } else {
+                    betSection = `<button class="btn-bet" onclick="openBetForm(${m.id}, '${m.homeTeam}', '${m.awayTeam}')">🎯 Apostar Agora</button>`;
+                }
+            }
 
             return `
                 <div class="match-card">
@@ -924,10 +1154,10 @@
                     </div>
                     <div class="match-info">📅 ${dateStr} | 🕐 ${timeStr}</div>
                     <div class="match-footer">
-                        <span>👥 ${m.participants}</span>
+                        <span>👥 ${m.participants} palpites</span>
                         <span class="prize">🏆 ${m.prizePool} WC</span>
                     </div>
-                    ${btn}
+                    ${betSection}
                 </div>
             `;
         }
@@ -955,29 +1185,131 @@
             c.innerHTML = list.length ? list.map(matchCard).join('') : '<p style="text-align:center;padding:40px;">Nenhuma partida.</p>';
         }
 
-        function placeBet(matchId) {
+        // ============ BET SYSTEM ============
+        function openBetForm(matchId, homeTeam, awayTeam) {
             if (!currentUser) { openModal('loginModal'); return; }
+            
             const match = matches.find(m => m.id === matchId);
             if (!match) return;
-            if (predictions.find(p => p.userId === currentUser.id && p.matchId === matchId)) {
-                toast('Você já apostou nesta partida!', 'info');
+            
+            // Create bet form directly in the match card
+            const betForm = document.createElement('div');
+            betForm.className = 'bet-form';
+            betForm.id = 'betForm-' + matchId;
+            betForm.innerHTML = `
+                <h4 style="text-align:center; margin-bottom:15px; color:#FF69B4;">🎯 Seu Palpite</h4>
+                <div class="score-inputs">
+                    <div class="score-input-group">
+                        <label>${homeTeam}</label>
+                        <input type="number" id="betHome-${matchId}" min="0" max="99" value="0" required>
+                    </div>
+                    <div style="font-size:24px;font-weight:bold;color:#ccc;">X</div>
+                    <div class="score-input-group">
+                        <label>${awayTeam}</label>
+                        <input type="number" id="betAway-${matchId}" min="0" max="99" value="0" required>
+                    </div>
+                </div>
+                <div class="bet-amount-group">
+                    <label>💰 Valor da Aposta (mínimo 20 WC)</label>
+                    <div class="bet-controls">
+                        <button class="bet-btn-ctrl" onclick="changeBetValue(${matchId}, -10)">-</button>
+                        <span class="bet-value" id="betValue-${matchId}">20</span>
+                        <button class="bet-btn-ctrl" onclick="changeBetValue(${matchId}, 10)">+</button>
+                        <span style="font-weight:bold;color:#FF69B4;">WC</span>
+                    </div>
+                    <p style="font-size:11px;color:#666;margin-top:5px;">Seu saldo: ${currentUser.webCoins} WC</p>
+                </div>
+                <button class="btn-confirm-bet" onclick="confirmBet(${matchId}, '${homeTeam}', '${awayTeam}')">✅ Confirmar Aposta</button>
+                <button class="btn btn-outline btn-full mt-15" onclick="cancelBet(${matchId})">Cancelar</button>
+            `;
+            
+            // Find the match card and append the form
+            const matchCards = document.querySelectorAll('.match-card');
+            matchCards.forEach(card => {
+                const btn = card.querySelector(`[onclick*="openBetForm(${matchId}"]`);
+                if (btn) {
+                    btn.style.display = 'none';
+                    card.appendChild(betForm);
+                }
+            });
+        }
+
+        function changeBetValue(matchId, amount) {
+            const valueEl = document.getElementById('betValue-' + matchId);
+            let current = parseInt(valueEl.textContent);
+            current = Math.max(20, Math.min(current + amount, currentUser ? currentUser.webCoins : 20));
+            valueEl.textContent = current;
+        }
+
+        function confirmBet(matchId, homeTeam, awayTeam) {
+            const homeScore = parseInt(document.getElementById('betHome-' + matchId).value);
+            const awayScore = parseInt(document.getElementById('betAway-' + matchId).value);
+            const betAmount = parseInt(document.getElementById('betValue-' + matchId).textContent);
+            
+            if (isNaN(homeScore) || isNaN(awayScore)) {
+                toast('Preencha o placar!', 'error');
                 return;
             }
-            if (currentUser.webCoins < 10) { toast('Web Coins insuficientes!', 'error'); return; }
             
-            if (confirm(`Apostar 10 WC em ${match.homeTeam} vs ${match.awayTeam}?`)) {
-                predictions.push({ id: Date.now(), userId: currentUser.id, matchId, homeScore: 0, awayScore: 0, bet: 10, isCorrect: false, date: new Date().toISOString() });
-                currentUser.webCoins -= 10;
-                currentUser.totalPredictions++;
-                match.participants++;
-                match.prizePool += 10;
-                const idx = users.findIndex(u => u.id === currentUser.id);
-                if (idx !== -1) users[idx] = currentUser;
-                savePredictions();
-                saveUsers();
-                saveMatches();
-                updateNav();
-                toast('Palpite registrado! 🎯', 'success');
+            if (betAmount < 20) {
+                toast('Aposta mínima: 20 WC', 'error');
+                return;
+            }
+            
+            if (currentUser.webCoins < betAmount) {
+                toast('Saldo insuficiente!', 'error');
+                return;
+            }
+            
+            const match = matches.find(m => m.id === matchId);
+            if (!match) return;
+            
+            // Create prediction
+            const prediction = {
+                id: Date.now(),
+                userId: currentUser.id,
+                matchId,
+                homeScore,
+                awayScore,
+                bet: betAmount,
+                isCorrect: false,
+                date: new Date().toISOString()
+            };
+            
+            predictions.push(prediction);
+            currentUser.webCoins -= betAmount;
+            currentUser.totalPredictions++;
+            match.participants++;
+            match.prizePool += betAmount;
+            
+            const idx = users.findIndex(u => u.id === currentUser.id);
+            if (idx !== -1) users[idx] = currentUser;
+            
+            savePredictions();
+            saveUsers();
+            saveMatches();
+            updateNav();
+            
+            toast(`Aposta de ${betAmount} WC registrada! 🎯`, 'success');
+            
+            // Refresh current view
+            if (!document.getElementById('matchesPage').classList.contains('hidden')) {
+                loadAllMatches();
+            } else {
+                loadFeatured();
+            }
+        }
+
+        function cancelBet(matchId) {
+            const betForm = document.getElementById('betForm-' + matchId);
+            if (betForm) {
+                betForm.remove();
+                // Show bet button again
+                const matchCards = document.querySelectorAll('.match-card');
+                matchCards.forEach(card => {
+                    const btn = card.querySelector(`[onclick*="openBetForm(${matchId}"]`);
+                    if (btn) btn.style.display = 'block';
+                });
             }
         }
 
@@ -1037,10 +1369,14 @@
                 return `<div class="match-card" style="border-left:4px solid ${col};">
                     <div class="match-header">
                         <span class="badge badge-champ">${m.championship}</span>
-                        <span style="color:${col};font-weight:bold;">${p.isCorrect ? '✅ GANHOU' : '❌ PERDEU'}</span>
+                        <span style="color:${col};font-weight:bold;">${p.isCorrect ? '✅ GANHOU ' + (p.bet * 2) + ' WC' : '❌ PERDEU'}</span>
                     </div>
-                    <p><strong>${m.homeTeam} ${p.homeScore || '?'} x ${p.awayScore || '?'} ${m.awayTeam}</strong></p>
-                    <p style="color:#666;font-size:13px;">Resultado: ${m.homeScore} x ${m.awayScore} | Aposta: ${p.bet} WC | ${new Date(p.date).toLocaleDateString('pt-BR')}</p>
+                    <p><strong>${m.homeTeam} ${m.homeScore} x ${m.awayScore} ${m.awayTeam}</strong></p>
+                    <p style="color:#666;font-size:13px;">
+                        Seu palpite: ${p.homeScore} x ${p.awayScore} | 
+                        Aposta: ${p.bet} WC | 
+                        ${new Date(p.date).toLocaleDateString('pt-BR')}
+                    </p>
                 </div>`;
             }).join('');
         }
@@ -1103,7 +1439,9 @@
         }
 
         function loadAdminMatches() {
-            document.getElementById('adminMatchesTable').innerHTML = matches.map(m => `
+            document.getElementById('adminMatchesTable').innerHTML = matches.map(m => {
+                const scoreDisplay = m.status === 'finished' ? `<strong style="color:#FF69B4;">${m.homeScore} x ${m.awayScore}</strong>` : '<span style="color:#999;">-</span>';
+                return `
                 <tr>
                     <td><strong>${m.homeTeam}</strong> vs <strong>${m.awayTeam}</strong></td>
                     <td>${m.championship}</td>
@@ -1115,45 +1453,80 @@
                             <option value="finished" ${m.status === 'finished' ? 'selected' : ''}>Encerrado</option>
                         </select>
                     </td>
+                    <td>${scoreDisplay}</td>
                     <td>
-                        <button class="btn-sm btn-blue" onclick="setResult(${m.id})">📝 Resultado</button>
+                        <button class="btn-sm btn-blue" onclick="openResultModal(${m.id})">📝 Definir Placar</button>
                         <button class="btn-sm btn-red" onclick="delMatch(${m.id})">🗑️</button>
                     </td>
                 </tr>
-            `).join('');
+            `}).join('');
         }
 
         function updStatus(id, s) {
             const m = matches.find(x => x.id === id);
-            if (m) { m.status = s; saveMatches(); toast('Status atualizado!', 'success'); }
+            if (m) { m.status = s; saveMatches(); loadAdminMatches(); toast('Status atualizado!', 'success'); }
         }
 
-        function setResult(id) {
-            const m = matches.find(x => x.id === id);
+        function openResultModal(matchId) {
+            const m = matches.find(x => x.id === matchId);
             if (!m) return;
-            const hs = prompt(`Gols do ${m.homeTeam}:`, m.homeScore);
-            if (hs === null) return;
-            const as = prompt(`Gols do ${m.awayTeam}:`, m.awayScore);
-            if (as === null) return;
-            m.homeScore = parseInt(hs);
-            m.awayScore = parseInt(as);
+            
+            document.getElementById('resultMatchInfo').textContent = `${m.homeTeam} vs ${m.awayTeam} - ${m.championship}`;
+            document.getElementById('resultHomeLabel').textContent = m.homeTeam;
+            document.getElementById('resultAwayLabel').textContent = m.awayTeam;
+            document.getElementById('resultHomeScore').value = m.homeScore || 0;
+            document.getElementById('resultAwayScore').value = m.awayScore || 0;
+            document.getElementById('resultMatchId').value = matchId;
+            
+            openModal('resultModal');
+        }
+
+        function saveResult(e) {
+            e.preventDefault();
+            
+            const matchId = parseInt(document.getElementById('resultMatchId').value);
+            const homeScore = parseInt(document.getElementById('resultHomeScore').value);
+            const awayScore = parseInt(document.getElementById('resultAwayScore').value);
+            
+            const m = matches.find(x => x.id === matchId);
+            if (!m) return;
+            
+            m.homeScore = homeScore;
+            m.awayScore = awayScore;
             m.status = 'finished';
-            predictions.filter(p => p.matchId === id).forEach(p => {
+            
+            // Process all predictions for this match
+            let winnersCount = 0;
+            predictions.filter(p => p.matchId === matchId).forEach(p => {
                 const u = users.find(x => x.id === p.userId);
                 if (!u) return;
-                p.isCorrect = p.homeScore === m.homeScore && p.awayScore === m.awayScore;
-                if (p.isCorrect) { u.webCoins += p.bet * 2; u.totalWins++; }
+                
+                p.isCorrect = (p.homeScore === homeScore && p.awayScore === awayScore);
+                
+                if (p.isCorrect) {
+                    const prize = p.bet * 2;
+                    u.webCoins += prize;
+                    u.totalWins++;
+                    winnersCount++;
+                }
             });
+            
             saveMatches();
             savePredictions();
             saveUsers();
             loadAdminMatches();
-            if (currentUser) { currentUser = users.find(x => x.id === currentUser.id); updateNav(); }
-            toast('Resultado definido!', 'success');
+            closeModal('resultModal');
+            
+            if (currentUser) {
+                currentUser = users.find(x => x.id === currentUser.id);
+                updateNav();
+            }
+            
+            toast(`✅ Placar definido! ${winnersCount} vencedor(es)!`, 'success');
         }
 
         function delMatch(id) {
-            if (confirm('Excluir partida?')) {
+            if (confirm('Excluir esta partida e todos os palpites relacionados?')) {
                 matches = matches.filter(m => m.id !== id);
                 predictions = predictions.filter(p => p.matchId !== id);
                 saveMatches();
@@ -1217,6 +1590,7 @@
         console.log('✅ Crasy Win pronto!');
         console.log('👑 Admin: admin@crasywin.com / admin123');
         console.log('👤 User: jogador1@email.com / 123456');
+        console.log('💰 Aposta mínima: 20 WC');
     </script>
 </body>
 </html>
