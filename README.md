@@ -761,6 +761,29 @@
             text-align: center;
         }
 
+        /* BANNER DE AVISO DE SALVAMENTO */
+        .save-indicator {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #4CAF50;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            z-index: 4000;
+            opacity: 0;
+            transition: all 0.5s;
+            pointer-events: none;
+        }
+
+        .save-indicator.show {
+            opacity: 1;
+            top: 20px;
+        }
+
         @media (max-width: 768px) {
             .matches-grid {
                 grid-template-columns: 1fr;
@@ -781,6 +804,9 @@
     </style>
 </head>
 <body>
+    <!-- INDICADOR DE SALVAMENTO -->
+    <div class="save-indicator" id="saveIndicator">💾 Alterações salvas permanentemente!</div>
+
     <!-- HEADER -->
     <header class="header">
         <div class="header-content">
@@ -799,7 +825,8 @@
     <div class="banner">
         <h1>⚽ Bem-vindo ao Crasy Win!</h1>
         <p>Faça seus palpites e ganhe Web Coins! 🏆</p>
-        <p style="margin-top: 10px; font-size: 14px;">Aposta mínima: 20 WC | Ganhe 1000 WC ao se cadastrar</p>
+        <p style="margin-top: 10px; font-size: 14px;">Aposta mínima: 20 WC | Ganhe 20 WC ao se cadastrar</p>
+        <p style="margin-top: 5px; font-size: 12px; opacity: 0.8;">💾 Todas as alterações são salvas automaticamente!</p>
     </div>
 
     <!-- CONTAINER -->
@@ -865,6 +892,7 @@
             <div class="profile-card" style="background: #1a1a1a; color: white;">
                 <div style="font-size: 40px;">🔧</div>
                 <h2>Painel Administrativo</h2>
+                <p style="font-size: 12px; opacity: 0.7;">Todas as alterações são salvas automaticamente</p>
             </div>
             
             <div class="admin-tabs">
@@ -947,7 +975,7 @@
     <div class="modal" id="registerModal">
         <div class="modal-content">
             <div class="modal-title">✨ Cadastro</div>
-            <p style="text-align: center; margin-bottom: 15px; color: #FF69B4;">Ganhe 1000 Web Coins!</p>
+            <p style="text-align: center; margin-bottom: 15px; color: #FF69B4;">Ganhe 20 Web Coins!</p>
             <form onsubmit="doRegister(event)">
                 <div class="form-group">
                     <label>Nome</label>
@@ -1003,15 +1031,30 @@
 
         // ============ INIT DEFAULT DATA ============
         function initData() {
+            // Se não houver usuários no localStorage, cria os padrão
             if (users.length === 0) {
                 users = [
-                    { id: 1, username: 'admin', email: 'admin@crasywin.com', password: 'admin123', avatar: '👑', webCoins: 100000, totalWins: 50, totalPredictions: 100, isBlocked: false, isAdmin: true, lastBonus: null },
-                    { id: 2, username: 'jogador1', email: 'jogador1@email.com', password: '123456', avatar: '⚽', webCoins: 5000, totalWins: 15, totalPredictions: 30, isBlocked: false, isAdmin: false, lastBonus: null },
-                    { id: 3, username: 'craque', email: 'craque@email.com', password: '123456', avatar: '🌟', webCoins: 8000, totalWins: 25, totalPredictions: 40, isBlocked: false, isAdmin: false, lastBonus: null }
+                    { id: 1, username: 'admin', email: 'admin@crasywin.com', password: 'admin123', avatar: '👑', webCoins: 20, totalWins: 50, totalPredictions: 100, isBlocked: false, isAdmin: true, lastBonus: null },
+                    { id: 2, username: 'jogador1', email: 'jogador1@email.com', password: '123456', avatar: '⚽', webCoins: 20, totalWins: 15, totalPredictions: 30, isBlocked: false, isAdmin: false, lastBonus: null },
+                    { id: 3, username: 'craque', email: 'craque@email.com', password: '123456', avatar: '🌟', webCoins: 20, totalWins: 25, totalPredictions: 40, isBlocked: false, isAdmin: false, lastBonus: null }
                 ];
                 saveUsers();
+            } else {
+                // Garante que usuários existentes tenham pelo menos 20 WC se tiverem menos
+                let updated = false;
+                users.forEach(u => {
+                    if (u.webCoins < 20) {
+                        u.webCoins = 20;
+                        updated = true;
+                    }
+                });
+                if (updated) {
+                    saveUsers();
+                    console.log('✅ Saldo mínimo de 20 WC garantido para todos os usuários');
+                }
             }
 
+            // Se não houver partidas no localStorage, cria as padrão
             if (matches.length === 0) {
                 const now = new Date();
                 matches = [
@@ -1022,12 +1065,52 @@
                     { id: 5, homeTeam: 'Santos', awayTeam: 'Corinthians', homeLogo: '⚪⚫', awayLogo: '⚫⚪', championship: 'Brasileirão', date: new Date(now.getTime() - 86400000).toISOString(), status: 'finished', homeScore: 2, awayScore: 1, participants: 80, prizePool: 1600 }
                 ];
                 saveMatches();
+                console.log('✅ Partidas padrão criadas e salvas');
             }
+
+            console.log('✅ Sistema carregado do armazenamento permanente');
+            console.log('💾 Dados salvos em localStorage - persistem após reiniciar');
+            console.log('👑 Admin: admin@crasywin.com / admin123');
+            console.log('👤 User: jogador1@email.com / 123456');
+            console.log('💰 Saldo inicial: 20 WC para novas contas');
         }
 
-        function saveUsers() { localStorage.setItem('cw_users', JSON.stringify(users)); }
-        function saveMatches() { localStorage.setItem('cw_matches', JSON.stringify(matches)); }
-        function savePredictions() { localStorage.setItem('cw_predictions', JSON.stringify(predictions)); }
+        // ============ FUNÇÕES DE SALVAMENTO PERMANENTE ============
+        function saveUsers() { 
+            localStorage.setItem('cw_users', JSON.stringify(users)); 
+            console.log('💾 Usuários salvos:', users.length, 'registros');
+            showSaveIndicator();
+        }
+        
+        function saveMatches() { 
+            localStorage.setItem('cw_matches', JSON.stringify(matches)); 
+            console.log('💾 Partidas salvas:', matches.length, 'registros');
+            showSaveIndicator();
+        }
+        
+        function savePredictions() { 
+            localStorage.setItem('cw_predictions', JSON.stringify(predictions)); 
+            console.log('💾 Palpites salvos:', predictions.length, 'registros');
+            showSaveIndicator();
+        }
+
+        function saveAllData() {
+            saveUsers();
+            saveMatches();
+            savePredictions();
+            console.log('💾 Todos os dados salvos permanentemente!');
+        }
+
+        // Indicador visual de salvamento
+        let saveTimeout;
+        function showSaveIndicator() {
+            const indicator = document.getElementById('saveIndicator');
+            indicator.classList.add('show');
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                indicator.classList.remove('show');
+            }, 2000);
+        }
 
         // ============ NAVIGATION ============
         function showPage(page) {
@@ -1091,14 +1174,29 @@
             const email = document.getElementById('regEmail').value.trim();
             const pass = document.getElementById('regPass').value;
             if (users.find(u => u.email === email)) { toast('Email já cadastrado!', 'error'); return; }
-            const newUser = { id: Date.now(), username: name, email, password: pass, avatar: '👤', webCoins: 1000, totalWins: 0, totalPredictions: 0, isBlocked: false, isAdmin: false, lastBonus: null };
+            
+            // NOVO: Apenas 20 WC iniciais
+            const newUser = { 
+                id: Date.now(), 
+                username: name, 
+                email, 
+                password: pass, 
+                avatar: '👤', 
+                webCoins: 20, // APENAS 20 COINS INICIAIS
+                totalWins: 0, 
+                totalPredictions: 0, 
+                isBlocked: false, 
+                isAdmin: false, 
+                lastBonus: null 
+            };
+            
             users.push(newUser);
             saveUsers();
             currentUser = newUser;
             closeModal('registerModal');
             updateNav();
             showPage('home');
-            toast('Conta criada! +1000 WC 🎉', 'success');
+            toast('Conta criada! +20 WC 🎉', 'success');
             document.getElementById('regName').value = '';
             document.getElementById('regEmail').value = '';
             document.getElementById('regPass').value = '';
@@ -1108,7 +1206,7 @@
             currentUser = null;
             updateNav();
             showPage('home');
-            toast('Logout realizado!', 'info');
+            toast('Logout realizado! Sessão encerrada.', 'info');
         }
 
         // ============ MATCHES ============
@@ -1285,12 +1383,13 @@
             const idx = users.findIndex(u => u.id === currentUser.id);
             if (idx !== -1) users[idx] = currentUser;
             
+            // SALVAR TUDO PERMANENTEMENTE
             savePredictions();
             saveUsers();
             saveMatches();
             updateNav();
             
-            toast(`Aposta de ${betAmount} WC registrada! 🎯`, 'success');
+            toast(`Aposta de ${betAmount} WC registrada e salva! 🎯`, 'success');
             
             // Refresh current view
             if (!document.getElementById('matchesPage').classList.contains('hidden')) {
@@ -1392,7 +1491,7 @@
             saveUsers();
             updateNav();
             loadProfile();
-            toast('🎁 +100 WC!', 'success');
+            toast('🎁 +100 WC! Bônus salvo!', 'success');
         }
 
         // ============ ADMIN ============
@@ -1422,7 +1521,12 @@
 
         function toggleBlock(id) {
             const u = users.find(x => x.id === id);
-            if (u && !u.isAdmin) { u.isBlocked = !u.isBlocked; saveUsers(); loadAdminUsers(); toast('Status alterado!', 'info'); }
+            if (u && !u.isAdmin) { 
+                u.isBlocked = !u.isBlocked; 
+                saveUsers(); 
+                loadAdminUsers(); 
+                toast('Status alterado e salvo!', 'info'); 
+            }
         }
 
         function editCoins(id) {
@@ -1434,7 +1538,7 @@
                 saveUsers();
                 loadAdminUsers();
                 if (currentUser && currentUser.id === id) { currentUser = u; updateNav(); }
-                toast('Saldo atualizado!', 'success');
+                toast('Saldo atualizado e salvo!', 'success');
             }
         }
 
@@ -1464,7 +1568,12 @@
 
         function updStatus(id, s) {
             const m = matches.find(x => x.id === id);
-            if (m) { m.status = s; saveMatches(); loadAdminMatches(); toast('Status atualizado!', 'success'); }
+            if (m) { 
+                m.status = s; 
+                saveMatches(); 
+                loadAdminMatches(); 
+                toast('Status atualizado e salvo!', 'success'); 
+            }
         }
 
         function openResultModal(matchId) {
@@ -1511,6 +1620,7 @@
                 }
             });
             
+            // SALVAR TUDO PERMANENTEMENTE
             saveMatches();
             savePredictions();
             saveUsers();
@@ -1522,17 +1632,17 @@
                 updateNav();
             }
             
-            toast(`✅ Placar definido! ${winnersCount} vencedor(es)!`, 'success');
+            toast(`✅ Placar definido! ${winnersCount} vencedor(es)! Dados salvos permanentemente!`, 'success');
         }
 
         function delMatch(id) {
-            if (confirm('Excluir esta partida e todos os palpites relacionados?')) {
+            if (confirm('Excluir esta partida e todos os palpites relacionados? Esta ação é permanente!')) {
                 matches = matches.filter(m => m.id !== id);
                 predictions = predictions.filter(p => p.matchId !== id);
                 saveMatches();
                 savePredictions();
                 loadAdminMatches();
-                toast('Partida excluída!', 'success');
+                toast('Partida excluída permanentemente!', 'success');
             }
         }
 
@@ -1552,7 +1662,7 @@
             });
             saveMatches();
             loadAdminMatches();
-            toast('Partida adicionada!', 'success');
+            toast('Partida adicionada e salva!', 'success');
         }
 
         function loadStats() {
@@ -1583,14 +1693,36 @@
             }
         });
 
+        // ============ VERIFICAÇÃO DE INTEGRIDADE ============
+        function verifyDataIntegrity() {
+            console.log('🔍 Verificando integridade dos dados salvos...');
+            console.log('   Usuários:', users.length, '| Partidas:', matches.length, '| Palpites:', predictions.length);
+            
+            // Verifica se há dados salvos no localStorage
+            const savedUsers = localStorage.getItem('cw_users');
+            const savedMatches = localStorage.getItem('cw_matches');
+            const savedPredictions = localStorage.getItem('cw_predictions');
+            
+            if (savedUsers && savedMatches) {
+                console.log('✅ Dados encontrados no armazenamento permanente');
+            } else {
+                console.log('⚠️ Alguns dados não encontrados, inicializando...');
+                initData();
+            }
+        }
+
         // ============ START ============
         initData();
+        verifyDataIntegrity();
         updateNav();
         showPage('home');
+        
         console.log('✅ Crasy Win pronto!');
+        console.log('💾 SISTEMA DE SALVAMENTO PERMANENTE ATIVO');
+        console.log('💰 20 WC INICIAIS PARA NOVAS CONTAS');
         console.log('👑 Admin: admin@crasywin.com / admin123');
         console.log('👤 User: jogador1@email.com / 123456');
-        console.log('💰 Aposta mínima: 20 WC');
+        console.log('📌 Todas as alterações são salvas automaticamente no navegador');
     </script>
 </body>
 </html>
