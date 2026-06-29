@@ -42,6 +42,36 @@
             font-weight: bold;
             color: #FF69B4;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* NOVO: Logo personalizada do site */
+        .site-logo-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .site-logo-placeholder {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .site-logo-text {
+            font-size: 26px;
+            font-weight: bold;
+            color: #FF69B4;
         }
 
         .nav-links {
@@ -197,9 +227,29 @@
             flex: 1;
         }
 
-        .team-emoji {
-            font-size: 40px;
+        .team-logo {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
             margin-bottom: 8px;
+            border-radius: 8px;
+            background: #f5f5f5;
+            padding: 5px;
+        }
+
+        .team-logo-placeholder {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
         }
 
         .team-name {
@@ -419,8 +469,25 @@
         .silver { color: #C0C0C0; }
         .bronze { color: #CD7F32; }
 
-        .user-avatar {
-            font-size: 30px;
+        .user-avatar-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #FF69B4;
+        }
+
+        .user-avatar-placeholder {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
         }
 
         .user-info {
@@ -569,9 +636,27 @@
             margin-bottom: 30px;
         }
 
-        .profile-emoji {
-            font-size: 60px;
+        .profile-avatar-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #FF69B4;
             margin-bottom: 15px;
+        }
+
+        .profile-avatar-placeholder {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 32px;
+            margin: 0 auto 15px;
         }
 
         .profile-name {
@@ -784,6 +869,36 @@
             top: 20px;
         }
 
+        /* CONFIGURAÇÕES DO SITE */
+        .config-section {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .config-section h3 {
+            color: #FF69B4;
+            margin-bottom: 15px;
+        }
+
+        .logo-preview {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .logo-preview-label {
+            font-weight: 600;
+            color: #666;
+            min-width: 100px;
+        }
+
         @media (max-width: 768px) {
             .matches-grid {
                 grid-template-columns: 1fr;
@@ -810,7 +925,9 @@
     <!-- HEADER -->
     <header class="header">
         <div class="header-content">
-            <div class="logo" onclick="showPage('home')">🎯 Crasy Win</div>
+            <div class="logo" onclick="showPage('home')" id="siteLogoContainer">
+                <!-- Logo será carregada dinamicamente -->
+            </div>
             <nav class="nav-links" id="navLinks">
                 <a onclick="showPage('home')">Início</a>
                 <a onclick="showPage('matches')">Partidas</a>
@@ -823,7 +940,7 @@
 
     <!-- BANNER -->
     <div class="banner">
-        <h1>⚽ Bem-vindo ao Crasy Win!</h1>
+        <h1>⚽ Bem-vindo ao <span id="bannerSiteName">Crasy Win</span>!</h1>
         <p>Faça seus palpites e ganhe Web Coins! 🏆</p>
         <p style="margin-top: 10px; font-size: 14px;">Aposta mínima: 20 WC | Ganhe 20 WC ao se cadastrar</p>
         <p style="margin-top: 5px; font-size: 12px; opacity: 0.8;">💾 Todas as alterações são salvas automaticamente!</p>
@@ -864,7 +981,7 @@
         <!-- PROFILE PAGE -->
         <div id="profilePage" class="hidden">
             <div class="profile-card">
-                <div class="profile-emoji" id="profileAvatar">👤</div>
+                <div id="profileAvatar"></div>
                 <div class="profile-name" id="profileName">Usuário</div>
                 <div class="profile-balance" id="profileBalance">💰 0 WC</div>
                 <button class="btn btn-pink" onclick="claimBonus()">🎁 Resgatar Bônus Diário (100 WC)</button>
@@ -896,12 +1013,44 @@
             </div>
             
             <div class="admin-tabs">
-                <button class="admin-tab active" onclick="showAdmin('users', this)">👥 Usuários</button>
+                <button class="admin-tab active" onclick="showAdmin('config', this)">⚙️ Configurações</button>
+                <button class="admin-tab" onclick="showAdmin('users', this)">👥 Usuários</button>
                 <button class="admin-tab" onclick="showAdmin('matches', this)">⚽ Partidas</button>
                 <button class="admin-tab" onclick="showAdmin('stats', this)">📊 Estatísticas</button>
             </div>
             
-            <div id="adminUsers">
+            <!-- NOVO: Painel de Configurações -->
+            <div id="adminConfig">
+                <div class="config-section">
+                    <h3>🎨 Personalização do Site</h3>
+                    
+                    <div class="form-group">
+                        <label>Nome do Site</label>
+                        <input type="text" id="siteName" placeholder="Crasy Win" value="Crasy Win">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>URL da Logo do Site (recomendado: 40x40px)</label>
+                        <input type="url" id="siteLogoUrl" placeholder="https://exemplo.com/logo.png">
+                        <small style="color: #666; display: block; margin-top: 5px;">Deixe em branco para usar o logo padrão</small>
+                    </div>
+                    
+                    <div class="logo-preview">
+                        <span class="logo-preview-label">Pré-visualização:</span>
+                        <div id="logoPreview"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ícone da Aba (Favicon) - URL</label>
+                        <input type="url" id="siteFavicon" placeholder="https://exemplo.com/favicon.ico">
+                        <small style="color: #666; display: block; margin-top: 5px;">URL do ícone que aparece na aba do navegador</small>
+                    </div>
+                    
+                    <button class="btn btn-pink btn-full" onclick="saveSiteConfig()">💾 Salvar Configurações</button>
+                </div>
+            </div>
+            
+            <div id="adminUsers" class="hidden">
                 <div class="admin-table">
                     <table>
                         <thead>
@@ -989,6 +1138,10 @@
                     <label>Senha</label>
                     <input type="password" id="regPass" placeholder="Mínimo 6 caracteres" required minlength="6">
                 </div>
+                <div class="form-group">
+                    <label>URL da Foto de Perfil (opcional)</label>
+                    <input type="url" id="regAvatar" placeholder="https://exemplo.com/foto.jpg">
+                </div>
                 <button type="submit" class="btn btn-pink btn-full">Criar Conta</button>
             </form>
             <button class="btn btn-outline btn-full mt-15" onclick="closeModal('registerModal')">Cancelar</button>
@@ -1023,85 +1176,313 @@
     <div id="toastContainer"></div>
 
     <script>
+        // ============ CONFIGURAÇÕES DO SITE ============
+        let siteConfig = JSON.parse(localStorage.getItem('cw_site_config')) || {
+            siteName: 'Crasy Win',
+            logoUrl: '',
+            favicon: ''
+        };
+
+        function saveSiteConfigToStorage() {
+            localStorage.setItem('cw_site_config', JSON.stringify(siteConfig));
+        }
+
         // ============ DATA ============
         let currentUser = null;
         let users = JSON.parse(localStorage.getItem('cw_users')) || [];
         let matches = JSON.parse(localStorage.getItem('cw_matches')) || [];
         let predictions = JSON.parse(localStorage.getItem('cw_predictions')) || [];
 
+        // ============ FUNÇÕES AUXILIARES PARA LOGOS ============
+        function getTeamLogo(logoUrl, teamName) {
+            if (logoUrl && logoUrl.startsWith('http')) {
+                return `<img src="${logoUrl}" alt="${teamName}" class="team-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
+            } else {
+                const initials = teamName.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+                return `<div class="team-logo-placeholder">${initials}</div>`;
+            }
+        }
+
+        function getUserAvatar(avatarUrl, username) {
+            if (avatarUrl && avatarUrl.startsWith('http')) {
+                return `<img src="${avatarUrl}" alt="${username}" class="user-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
+            } else {
+                const initial = username.charAt(0).toUpperCase();
+                return `<div class="user-avatar-placeholder">${initial}</div>`;
+            }
+        }
+
+        function getProfileAvatar(avatarUrl, username) {
+            if (avatarUrl && avatarUrl.startsWith('http')) {
+                return `<img src="${avatarUrl}" alt="${username}" class="profile-avatar-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`;
+            } else {
+                const initial = username.charAt(0).toUpperCase();
+                return `<div class="profile-avatar-placeholder">${initial}</div>`;
+            }
+        }
+
+        // ============ FUNÇÃO DA LOGO DO SITE ============
+        function updateSiteLogo() {
+            const logoContainer = document.getElementById('siteLogoContainer');
+            const bannerSiteName = document.getElementById('bannerSiteName');
+            
+            // Atualiza nome do site no banner
+            if (bannerSiteName) {
+                bannerSiteName.textContent = siteConfig.siteName;
+            }
+            
+            // Atualiza título da página
+            document.title = siteConfig.siteName;
+            
+            // Atualiza favicon
+            if (siteConfig.favicon && siteConfig.favicon.startsWith('http')) {
+                let faviconLink = document.getElementById('dynamicFavicon');
+                if (!faviconLink) {
+                    faviconLink = document.createElement('link');
+                    faviconLink.id = 'dynamicFavicon';
+                    faviconLink.rel = 'icon';
+                    document.head.appendChild(faviconLink);
+                }
+                faviconLink.href = siteConfig.favicon;
+            }
+            
+            // Monta a logo
+            let logoHTML = '';
+            if (siteConfig.logoUrl && siteConfig.logoUrl.startsWith('http')) {
+                logoHTML = `
+                    <img src="${siteConfig.logoUrl}" alt="${siteConfig.siteName}" class="site-logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <span class="site-logo-text" style="display:none;">${siteConfig.siteName}</span>
+                `;
+            } else {
+                logoHTML = `
+                    <div class="site-logo-placeholder">🎯</div>
+                    <span class="site-logo-text">${siteConfig.siteName}</span>
+                `;
+            }
+            
+            logoContainer.innerHTML = logoHTML;
+        }
+
+        function updateLogoPreview() {
+            const logoUrl = document.getElementById('siteLogoUrl').value;
+            const preview = document.getElementById('logoPreview');
+            
+            if (logoUrl && logoUrl.startsWith('http')) {
+                preview.innerHTML = `
+                    <img src="${logoUrl}" alt="Preview" class="site-logo-img" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><rect fill=%22%23ddd%22 width=%2240%22 height=%2240%22/><text x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2212%22>ERRO</text></svg>';">
+                    <span style="margin-left:10px;color:#4CAF50;">✅ Logo carregada</span>
+                `;
+            } else {
+                preview.innerHTML = `
+                    <div class="site-logo-placeholder">🎯</div>
+                    <span style="margin-left:10px;color:#666;">Logo padrão</span>
+                `;
+            }
+        }
+
+        function saveSiteConfig() {
+            const siteName = document.getElementById('siteName').value.trim();
+            const logoUrl = document.getElementById('siteLogoUrl').value.trim();
+            const favicon = document.getElementById('siteFavicon').value.trim();
+            
+            if (!siteName) {
+                toast('O nome do site é obrigatório!', 'error');
+                return;
+            }
+            
+            siteConfig.siteName = siteName;
+            siteConfig.logoUrl = logoUrl;
+            siteConfig.favicon = favicon;
+            
+            saveSiteConfigToStorage();
+            updateSiteLogo();
+            showSaveIndicator();
+            
+            toast('✅ Configurações salvas com sucesso!', 'success');
+        }
+
+        function loadSiteConfigToForm() {
+            document.getElementById('siteName').value = siteConfig.siteName;
+            document.getElementById('siteLogoUrl').value = siteConfig.logoUrl;
+            document.getElementById('siteFavicon').value = siteConfig.favicon;
+            updateLogoPreview();
+        }
+
+        // Event listener para preview em tempo real
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoUrlInput = document.getElementById('siteLogoUrl');
+            if (logoUrlInput) {
+                logoUrlInput.addEventListener('input', updateLogoPreview);
+            }
+        });
+
         // ============ INIT DEFAULT DATA ============
         function initData() {
-            // Se não houver usuários no localStorage, cria os padrão
             if (users.length === 0) {
                 users = [
-                    { id: 1, username: 'admin', email: 'admin@crasywin.com', password: 'admin123', avatar: '👑', webCoins: 20, totalWins: 50, totalPredictions: 100, isBlocked: false, isAdmin: true, lastBonus: null },
-                    { id: 2, username: 'jogador1', email: 'jogador1@email.com', password: '123456', avatar: '⚽', webCoins: 20, totalWins: 15, totalPredictions: 30, isBlocked: false, isAdmin: false, lastBonus: null },
-                    { id: 3, username: 'craque', email: 'craque@email.com', password: '123456', avatar: '🌟', webCoins: 20, totalWins: 25, totalPredictions: 40, isBlocked: false, isAdmin: false, lastBonus: null }
+                    { 
+                        id: 1, 
+                        username: 'admin', 
+                        email: 'admin@crasywin.com', 
+                        password: 'admin123', 
+                        avatar: '',
+                        webCoins: 20, 
+                        totalWins: 50, 
+                        totalPredictions: 100, 
+                        isBlocked: false, 
+                        isAdmin: true, 
+                        lastBonus: null 
+                    },
+                    { 
+                        id: 2, 
+                        username: 'jogador1', 
+                        email: 'jogador1@email.com', 
+                        password: '123456', 
+                        avatar: 'https://i.pravatar.cc/150?img=1',
+                        webCoins: 20, 
+                        totalWins: 15, 
+                        totalPredictions: 30, 
+                        isBlocked: false, 
+                        isAdmin: false, 
+                        lastBonus: null 
+                    },
+                    { 
+                        id: 3, 
+                        username: 'craque', 
+                        email: 'craque@email.com', 
+                        password: '123456', 
+                        avatar: 'https://i.pravatar.cc/150?img=2',
+                        webCoins: 20, 
+                        totalWins: 25, 
+                        totalPredictions: 40, 
+                        isBlocked: false, 
+                        isAdmin: false, 
+                        lastBonus: null 
+                    }
                 ];
                 saveUsers();
             } else {
-                // Garante que usuários existentes tenham pelo menos 20 WC se tiverem menos
                 let updated = false;
                 users.forEach(u => {
                     if (u.webCoins < 20) {
                         u.webCoins = 20;
                         updated = true;
                     }
+                    if (!u.avatar) {
+                        u.avatar = '';
+                        updated = true;
+                    }
                 });
-                if (updated) {
-                    saveUsers();
-                    console.log('✅ Saldo mínimo de 20 WC garantido para todos os usuários');
-                }
+                if (updated) saveUsers();
             }
 
-            // Se não houver partidas no localStorage, cria as padrão
             if (matches.length === 0) {
                 const now = new Date();
                 matches = [
-                    { id: 1, homeTeam: 'Flamengo', awayTeam: 'Palmeiras', homeLogo: '🔴⚫', awayLogo: '🟢⚪', championship: 'Brasileirão', date: new Date(now.getTime() + 3600000).toISOString(), status: 'scheduled', homeScore: 0, awayScore: 0, participants: 45, prizePool: 450 },
-                    { id: 2, homeTeam: 'Man City', awayTeam: 'Liverpool', homeLogo: '🔵', awayLogo: '🔴', championship: 'Premier League', date: new Date(now.getTime() + 7200000).toISOString(), status: 'live', homeScore: 1, awayScore: 0, participants: 120, prizePool: 2400 },
-                    { id: 3, homeTeam: 'Barcelona', awayTeam: 'Real Madrid', homeLogo: '🔵🔴', awayLogo: '⚪', championship: 'La Liga', date: new Date(now.getTime() + 86400000).toISOString(), status: 'scheduled', homeScore: 0, awayScore: 0, participants: 200, prizePool: 5000 },
-                    { id: 4, homeTeam: 'PSG', awayTeam: 'Bayern', homeLogo: '🔵', awayLogo: '🔴', championship: 'Champions League', date: new Date(now.getTime() + 172800000).toISOString(), status: 'scheduled', homeScore: 0, awayScore: 0, participants: 300, prizePool: 9000 },
-                    { id: 5, homeTeam: 'Santos', awayTeam: 'Corinthians', homeLogo: '⚪⚫', awayLogo: '⚫⚪', championship: 'Brasileirão', date: new Date(now.getTime() - 86400000).toISOString(), status: 'finished', homeScore: 2, awayScore: 1, participants: 80, prizePool: 1600 }
+                    { 
+                        id: 1, 
+                        homeTeam: 'Flamengo', 
+                        awayTeam: 'Palmeiras', 
+                        homeLogo: 'https://logodetimes.com/times/flamengo/logo-flamengo-256.png',
+                        awayLogo: 'https://logodetimes.com/times/palmeiras/logo-palmeiras-256.png',
+                        championship: 'Brasileirão', 
+                        date: new Date(now.getTime() + 3600000).toISOString(), 
+                        status: 'scheduled', 
+                        homeScore: 0, 
+                        awayScore: 0, 
+                        participants: 45, 
+                        prizePool: 450 
+                    },
+                    { 
+                        id: 2, 
+                        homeTeam: 'Man City', 
+                        awayTeam: 'Liverpool', 
+                        homeLogo: 'https://logodetimes.com/times/manchester-city/logo-manchester-city-256.png',
+                        awayLogo: 'https://logodetimes.com/times/liverpool/logo-liverpool-256.png',
+                        championship: 'Premier League', 
+                        date: new Date(now.getTime() + 7200000).toISOString(), 
+                        status: 'live', 
+                        homeScore: 1, 
+                        awayScore: 0, 
+                        participants: 120, 
+                        prizePool: 2400 
+                    },
+                    { 
+                        id: 3, 
+                        homeTeam: 'Barcelona', 
+                        awayTeam: 'Real Madrid', 
+                        homeLogo: 'https://logodetimes.com/times/barcelona/logo-barcelona-256.png',
+                        awayLogo: 'https://logodetimes.com/times/real-madrid/logo-real-madrid-256.png',
+                        championship: 'La Liga', 
+                        date: new Date(now.getTime() + 86400000).toISOString(), 
+                        status: 'scheduled', 
+                        homeScore: 0, 
+                        awayScore: 0, 
+                        participants: 200, 
+                        prizePool: 5000 
+                    },
+                    { 
+                        id: 4, 
+                        homeTeam: 'PSG', 
+                        awayTeam: 'Bayern', 
+                        homeLogo: 'https://logodetimes.com/times/psg/logo-psg-256.png',
+                        awayLogo: 'https://logodetimes.com/times/bayern-munique/logo-bayern-munique-256.png',
+                        championship: 'Champions League', 
+                        date: new Date(now.getTime() + 172800000).toISOString(), 
+                        status: 'scheduled', 
+                        homeScore: 0, 
+                        awayScore: 0, 
+                        participants: 300, 
+                        prizePool: 9000 
+                    },
+                    { 
+                        id: 5, 
+                        homeTeam: 'Santos', 
+                        awayTeam: 'Corinthians', 
+                        homeLogo: 'https://logodetimes.com/times/santos/logo-santos-256.png',
+                        awayLogo: 'https://logodetimes.com/times/corinthians/logo-corinthians-256.png',
+                        championship: 'Brasileirão', 
+                        date: new Date(now.getTime() - 86400000).toISOString(), 
+                        status: 'finished', 
+                        homeScore: 2, 
+                        awayScore: 1, 
+                        participants: 80, 
+                        prizePool: 1600 
+                    }
                 ];
                 saveMatches();
-                console.log('✅ Partidas padrão criadas e salvas');
+            } else {
+                let updated = false;
+                matches.forEach(m => {
+                    if (!m.homeLogo) {
+                        m.homeLogo = '';
+                        updated = true;
+                    }
+                    if (!m.awayLogo) {
+                        m.awayLogo = '';
+                        updated = true;
+                    }
+                });
+                if (updated) saveMatches();
             }
-
-            console.log('✅ Sistema carregado do armazenamento permanente');
-            console.log('💾 Dados salvos em localStorage - persistem após reiniciar');
-            console.log('👑 Admin: admin@crasywin.com / admin123');
-            console.log('👤 User: jogador1@email.com / 123456');
-            console.log('💰 Saldo inicial: 20 WC para novas contas');
         }
 
         // ============ FUNÇÕES DE SALVAMENTO PERMANENTE ============
         function saveUsers() { 
             localStorage.setItem('cw_users', JSON.stringify(users)); 
-            console.log('💾 Usuários salvos:', users.length, 'registros');
             showSaveIndicator();
         }
         
         function saveMatches() { 
             localStorage.setItem('cw_matches', JSON.stringify(matches)); 
-            console.log('💾 Partidas salvas:', matches.length, 'registros');
             showSaveIndicator();
         }
         
         function savePredictions() { 
             localStorage.setItem('cw_predictions', JSON.stringify(predictions)); 
-            console.log('💾 Palpites salvos:', predictions.length, 'registros');
             showSaveIndicator();
         }
 
-        function saveAllData() {
-            saveUsers();
-            saveMatches();
-            savePredictions();
-            console.log('💾 Todos os dados salvos permanentemente!');
-        }
-
-        // Indicador visual de salvamento
         let saveTimeout;
         function showSaveIndicator() {
             const indicator = document.getElementById('saveIndicator');
@@ -1134,7 +1515,7 @@
                     <a onclick="showPage('home')">Início</a>
                     <a onclick="showPage('matches')">Partidas</a>
                     <a onclick="showPage('ranking')">Ranking</a>
-                    <a onclick="showPage('profile')">👤 ${currentUser.username}</a>
+                    <a onclick="showPage('profile')">${getUserAvatar(currentUser.avatar, currentUser.username)} ${currentUser.username}</a>
                     <span style="background:#FFF0F5; padding:8px 15px; border-radius:20px; font-weight:600; color:#FF69B4;">💰 ${currentUser.webCoins} WC</span>
                     <button class="btn btn-outline" onclick="logout()">Sair</button>
                 `;
@@ -1173,16 +1554,17 @@
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const pass = document.getElementById('regPass').value;
+            const avatarUrl = document.getElementById('regAvatar').value.trim();
+            
             if (users.find(u => u.email === email)) { toast('Email já cadastrado!', 'error'); return; }
             
-            // NOVO: Apenas 20 WC iniciais
             const newUser = { 
                 id: Date.now(), 
                 username: name, 
                 email, 
                 password: pass, 
-                avatar: '👤', 
-                webCoins: 20, // APENAS 20 COINS INICIAIS
+                avatar: avatarUrl,
+                webCoins: 20,
                 totalWins: 0, 
                 totalPredictions: 0, 
                 isBlocked: false, 
@@ -1200,6 +1582,7 @@
             document.getElementById('regName').value = '';
             document.getElementById('regEmail').value = '';
             document.getElementById('regPass').value = '';
+            document.getElementById('regAvatar').value = '';
         }
 
         function logout() {
@@ -1241,12 +1624,12 @@
                     </div>
                     <div class="match-teams">
                         <div class="team">
-                            <div class="team-emoji">${m.homeLogo}</div>
+                            ${getTeamLogo(m.homeLogo, m.homeTeam)}
                             <div class="team-name">${m.homeTeam}</div>
                         </div>
                         ${center}
                         <div class="team">
-                            <div class="team-emoji">${m.awayLogo}</div>
+                            ${getTeamLogo(m.awayLogo, m.awayTeam)}
                             <div class="team-name">${m.awayTeam}</div>
                         </div>
                     </div>
@@ -1290,7 +1673,6 @@
             const match = matches.find(m => m.id === matchId);
             if (!match) return;
             
-            // Create bet form directly in the match card
             const betForm = document.createElement('div');
             betForm.className = 'bet-form';
             betForm.id = 'betForm-' + matchId;
@@ -1321,7 +1703,6 @@
                 <button class="btn btn-outline btn-full mt-15" onclick="cancelBet(${matchId})">Cancelar</button>
             `;
             
-            // Find the match card and append the form
             const matchCards = document.querySelectorAll('.match-card');
             matchCards.forEach(card => {
                 const btn = card.querySelector(`[onclick*="openBetForm(${matchId}"]`);
@@ -1362,7 +1743,6 @@
             const match = matches.find(m => m.id === matchId);
             if (!match) return;
             
-            // Create prediction
             const prediction = {
                 id: Date.now(),
                 userId: currentUser.id,
@@ -1383,7 +1763,6 @@
             const idx = users.findIndex(u => u.id === currentUser.id);
             if (idx !== -1) users[idx] = currentUser;
             
-            // SALVAR TUDO PERMANENTEMENTE
             savePredictions();
             saveUsers();
             saveMatches();
@@ -1391,7 +1770,6 @@
             
             toast(`Aposta de ${betAmount} WC registrada e salva! 🎯`, 'success');
             
-            // Refresh current view
             if (!document.getElementById('matchesPage').classList.contains('hidden')) {
                 loadAllMatches();
             } else {
@@ -1403,7 +1781,6 @@
             const betForm = document.getElementById('betForm-' + matchId);
             if (betForm) {
                 betForm.remove();
-                // Show bet button again
                 const matchCards = document.querySelectorAll('.match-card');
                 matchCards.forEach(card => {
                     const btn = card.querySelector(`[onclick*="openBetForm(${matchId}"]`);
@@ -1423,7 +1800,7 @@
                 else if (i === 2) { cls = 'bronze'; icon = '🥉'; }
                 return `<div class="ranking-item">
                     <div class="rank-num ${cls}">${icon}</div>
-                    <div class="user-avatar">${u.avatar}</div>
+                    ${getUserAvatar(u.avatar, u.username)}
                     <div class="user-info"><div class="user-name">${u.username}</div><div class="user-stats">${u.totalWins} vitórias</div></div>
                     <div class="user-coins">💰 ${u.webCoins} WC</div>
                 </div>`;
@@ -1441,7 +1818,7 @@
                 const rate = u.totalPredictions > 0 ? Math.round((u.totalWins / u.totalPredictions) * 100) : 0;
                 return `<div class="ranking-item">
                     <div class="rank-num ${cls}">${icon}</div>
-                    <div class="user-avatar">${u.avatar}</div>
+                    ${getUserAvatar(u.avatar, u.username)}
                     <div class="user-info"><div class="user-name">${u.username}</div><div class="user-stats">${u.totalWins} vitórias | ${rate}% | ${u.totalPredictions} palpites</div></div>
                     <div class="user-coins">💰 ${u.webCoins} WC</div>
                 </div>`;
@@ -1451,7 +1828,7 @@
         // ============ PROFILE ============
         function loadProfile() {
             if (!currentUser) return;
-            document.getElementById('profileAvatar').textContent = currentUser.avatar;
+            document.getElementById('profileAvatar').innerHTML = getProfileAvatar(currentUser.avatar, currentUser.username);
             document.getElementById('profileName').textContent = currentUser.username;
             document.getElementById('profileBalance').textContent = `💰 ${currentUser.webCoins} WC`;
             document.getElementById('totalPred').textContent = currentUser.totalPredictions;
@@ -1496,9 +1873,13 @@
 
         // ============ ADMIN ============
         function showAdmin(tab, btn) {
-            document.querySelectorAll('#adminUsers, #adminMatches, #adminStats').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('#adminConfig, #adminUsers, #adminMatches, #adminStats').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.admin-tab').forEach(el => el.classList.remove('active'));
             if (btn) btn.classList.add('active');
+            if (tab === 'config') { 
+                document.getElementById('adminConfig').classList.remove('hidden'); 
+                loadSiteConfigToForm();
+            }
             if (tab === 'users') { document.getElementById('adminUsers').classList.remove('hidden'); loadAdminUsers(); }
             if (tab === 'matches') { document.getElementById('adminMatches').classList.remove('hidden'); loadAdminMatches(); }
             if (tab === 'stats') { document.getElementById('adminStats').classList.remove('hidden'); loadStats(); }
@@ -1507,7 +1888,7 @@
         function loadAdminUsers() {
             document.getElementById('adminUsersTable').innerHTML = users.map(u => `
                 <tr>
-                    <td>${u.avatar} <strong>${u.username}</strong> ${u.isAdmin ? '<span style="background:gold;padding:2px 8px;border-radius:10px;font-size:10px;">ADMIN</span>' : ''}</td>
+                    <td>${getUserAvatar(u.avatar, u.username)} <strong>${u.username}</strong> ${u.isAdmin ? '<span style="background:gold;padding:2px 8px;border-radius:10px;font-size:10px;">ADMIN</span>' : ''}</td>
                     <td>${u.email}</td>
                     <td><strong>${u.webCoins} WC</strong></td>
                     <td><span style="color:${u.isBlocked ? '#f44336' : '#4CAF50'};font-weight:bold;">${u.isBlocked ? 'Bloqueado' : 'Ativo'}</span></td>
@@ -1604,7 +1985,6 @@
             m.awayScore = awayScore;
             m.status = 'finished';
             
-            // Process all predictions for this match
             let winnersCount = 0;
             predictions.filter(p => p.matchId === matchId).forEach(p => {
                 const u = users.find(x => x.id === p.userId);
@@ -1620,7 +2000,6 @@
                 }
             });
             
-            // SALVAR TUDO PERMANENTEMENTE
             saveMatches();
             savePredictions();
             saveUsers();
@@ -1655,10 +2034,22 @@
             if (!ch) return;
             const hrs = prompt('Horas até a partida:', '24');
             if (!hrs) return;
+            const homeLogoUrl = prompt('URL do logo do time mandante (opcional):', '');
+            const awayLogoUrl = prompt('URL do logo do time visitante (opcional):', '');
+            
             matches.push({
-                id: Date.now(), homeTeam: ht, awayTeam: at, homeLogo: '⚽', awayLogo: '⚽',
-                championship: ch, date: new Date(Date.now() + parseInt(hrs) * 3600000).toISOString(),
-                status: 'scheduled', homeScore: 0, awayScore: 0, participants: 0, prizePool: 0
+                id: Date.now(), 
+                homeTeam: ht, 
+                awayTeam: at, 
+                homeLogo: homeLogoUrl, 
+                awayLogo: awayLogoUrl,
+                championship: ch, 
+                date: new Date(Date.now() + parseInt(hrs) * 3600000).toISOString(),
+                status: 'scheduled', 
+                homeScore: 0, 
+                awayScore: 0, 
+                participants: 0, 
+                prizePool: 0
             });
             saveMatches();
             loadAdminMatches();
@@ -1693,36 +2084,19 @@
             }
         });
 
-        // ============ VERIFICAÇÃO DE INTEGRIDADE ============
-        function verifyDataIntegrity() {
-            console.log('🔍 Verificando integridade dos dados salvos...');
-            console.log('   Usuários:', users.length, '| Partidas:', matches.length, '| Palpites:', predictions.length);
-            
-            // Verifica se há dados salvos no localStorage
-            const savedUsers = localStorage.getItem('cw_users');
-            const savedMatches = localStorage.getItem('cw_matches');
-            const savedPredictions = localStorage.getItem('cw_predictions');
-            
-            if (savedUsers && savedMatches) {
-                console.log('✅ Dados encontrados no armazenamento permanente');
-            } else {
-                console.log('⚠️ Alguns dados não encontrados, inicializando...');
-                initData();
-            }
-        }
-
         // ============ START ============
         initData();
-        verifyDataIntegrity();
+        updateSiteLogo();
         updateNav();
         showPage('home');
         
         console.log('✅ Crasy Win pronto!');
         console.log('💾 SISTEMA DE SALVAMENTO PERMANENTE ATIVO');
         console.log('💰 20 WC INICIAIS PARA NOVAS CONTAS');
+        console.log('🖼️ SISTEMA DE LOGOS POR URL ATIVADO');
+        console.log('⚙️ PAINEL DE CONFIGURAÇÕES DISPONÍVEL NO ADMIN');
         console.log('👑 Admin: admin@crasywin.com / admin123');
         console.log('👤 User: jogador1@email.com / 123456');
-        console.log('📌 Todas as alterações são salvas automaticamente no navegador');
     </script>
 </body>
 </html>
